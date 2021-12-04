@@ -4,9 +4,12 @@ const MovieList = () => {
   const [moviesData, setMoviesData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  //fetching data from firebase
   const fetchMovie = useCallback(() => {
     setIsLoading(true);
-    fetch('https://swapi.dev/api/films')
+    fetch(
+      'https://react-movie-project-abaed-default-rtdb.firebaseio.com/movies.json'
+    )
       .then((response) => {
         if (!response.ok) {
           throw new Error('Something went wrong !!!');
@@ -14,12 +17,21 @@ const MovieList = () => {
         return response.json();
       })
       .then((data) => {
-        const transformedMovie = data.results.map((movieData) => {
+        const loadedMovies = [];
+        for (const key in data) {
+          loadedMovies.push({
+            id: key,
+            title: data[key].title,
+            releaseDate: data[key].releaseDate,
+            openingText: data[key].openingText,
+          });
+        }
+        const transformedMovie = loadedMovies.map((movieData) => {
           return {
-            id: movieData.episode_id,
+            id: movieData.id,
             title: movieData.title,
-            releaseDate: movieData.release_date,
-            openingText: movieData.opening_crawl,
+            releaseDate: movieData.releaseDate,
+            openingText: movieData.openingText,
           };
         });
         setMoviesData(transformedMovie);
@@ -31,10 +43,10 @@ const MovieList = () => {
       });
   });
 
-  useEffect(() => {
+  /*useEffect(() => {
     fetchMovie();
-  }, [fetchMovie]);
-
+  }, [fetchMovie]);*/
+  //set data in firebase
   const addMovie = (event) => {
     event.preventDefault();
     const addedMovie = {

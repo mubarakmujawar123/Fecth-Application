@@ -4,7 +4,12 @@ const List = (props) => {
     <div>
       {props.moviesData.map((movieData) => {
         console.log(movieData);
-        return <div key={movieData.id}>{movieData.id} -- {movieData.title} -- {movieData.releaseDate}</div>;
+        return (
+          <div key={movieData.id}>
+            {movieData.id} -- {movieData.title} -- {movieData.releaseDate}--{' '}
+            {movieData.openingText}
+          </div>
+        );
       })}
     </div>
   );
