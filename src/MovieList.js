@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import List from './List';
 const MovieList = () => {
   const [moviesData, setMoviesData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const fetchMovie = () => {
+  const fetchMovie = useCallback(() => {
     setIsLoading(true);
     fetch('https://swapi.dev/api/films')
       .then((response) => {
@@ -29,6 +29,14 @@ const MovieList = () => {
         setError(error.message);
         setIsLoading(false);
       });
+  });
+
+  useEffect(() => {
+    fetchMovie();
+  }, [fetchMovie]);
+
+  const addMovie = (event) => {
+    event.preventDefault();
   };
 
   let content = <p>Found no Movie</p>;
@@ -44,6 +52,16 @@ const MovieList = () => {
 
   return (
     <React.Fragment>
+      qweqweqw
+      <form onSubmit={addMovie}>
+        <lable>Title</lable>
+        <input name="title" />
+        <lable>Release Date</lable>
+        <input name="releaseDate" />
+        <lable>Opening Text</lable>
+        <input name="openingText" />
+        <input type="Submit" value="Add Movie" />
+      </form>
       <button onClick={fetchMovie}>Fetch data</button>
       {content}
     </React.Fragment>
