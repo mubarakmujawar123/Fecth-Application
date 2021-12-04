@@ -37,6 +37,21 @@ const MovieList = () => {
 
   const addMovie = (event) => {
     event.preventDefault();
+    const addedMovie = {
+      title: event.target.title.value,
+      releaseDate: event.target.releaseDate.value,
+      openingText: event.target.openingText.value,
+    };
+    fetch(
+      'https://react-movie-project-abaed-default-rtdb.firebaseio.com/movies.json',
+      {
+        method: 'post',
+        body: JSON.stringify(addedMovie),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
   };
 
   let content = <p>Found no Movie</p>;
@@ -52,15 +67,24 @@ const MovieList = () => {
 
   return (
     <React.Fragment>
-      qweqweqw
+      Add movie <br />
+      <br />
       <form onSubmit={addMovie}>
         <lable>Title</lable>
         <input name="title" />
+        <br />
         <lable>Release Date</lable>
         <input name="releaseDate" />
+        <br />
         <lable>Opening Text</lable>
         <input name="openingText" />
+        <br />
+        <br />
         <input type="Submit" value="Add Movie" />
+        <br />
+        <br />
+        <br />
+        <br />
       </form>
       <button onClick={fetchMovie}>Fetch data</button>
       {content}
